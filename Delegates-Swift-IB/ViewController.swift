@@ -39,7 +39,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             self.drummers.append(newDrummer.text!)
             self.tableView.reloadData()
             
-            
         }
         
         ac.addAction(submitAction)
