@@ -2,8 +2,6 @@
 //  ViewController.swift
 //  Delegates-Swift-IB
 //
-//  Created by Alistair Cooper on 4/27/16.
-//  Copyright © 2016 Alistair Cooper. All rights reserved.
 //
 
 import UIKit
@@ -16,18 +14,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: #selector(ViewController.addNewDrummer))
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(ViewController.addNewDrummer))
         
         navigationItem.title = "favorite drummers"
     }
     
     func addNewDrummer() {
         
-        let ac = UIAlertController(title: "Add New Drummer", message: nil, preferredStyle: .Alert)
-        ac.addTextFieldWithConfigurationHandler(nil)
+        let ac = UIAlertController(title: "Add New Drummer", message: nil, preferredStyle: .alert)
+        ac.addTextField(configurationHandler: nil)
         
-        let submitAction = UIAlertAction(title: "Submit", style: .Default) { [unowned self, ac] (action: UIAlertAction!) in
+        let submitAction = UIAlertAction(title: "Submit", style: .default) { [unowned self, ac] (action: UIAlertAction!) in
             let newDrummer = ac.textFields![0] 
             
             self.drummers.append(newDrummer.text!)
@@ -36,39 +34,41 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         
         ac.addAction(submitAction)
-        ac.addAction(UIAlertAction(title: "Cancel", style: .Cancel, handler: nil))
+        ac.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
 
-        presentViewController(ac, animated: true, completion: nil)
+        present(ac, animated: true, completion: nil)
         
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return drummers.count
     }
     
     // populate the prototype cell in Main storyboard
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("drummerCell")!
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        cell.textLabel?.text = drummers[indexPath.row]
+        let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "drummerCell")!
+        
+        cell.textLabel?.text = drummers[(indexPath as NSIndexPath).row]
         
         return cell
     }
     
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
     // to delete row from table and update drummers array
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == UITableViewCellEditingStyle.Delete {
-            drummers.removeAtIndex(indexPath.row)
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        
+        if editingStyle == UITableViewCellEditingStyle.delete {
+            drummers.remove(at: (indexPath as NSIndexPath).row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
             
         }
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100.0
     }
 
